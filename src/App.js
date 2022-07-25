@@ -1,8 +1,21 @@
 import './App.css';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, connect } from 'react-redux'
+import { useEffect } from 'react';
+import { renderIntoDocument } from 'react-dom/test-utils';
 
-function App() {
-  // your logic goes here!
+function App(props) {
+  const dispatch = useDispatch()
+  const data = useSelector((state) => state.data)
+
+  const renderImg = () => {
+    if(data.apiData) {
+      return <img style={{'width': '100vw'}} src={data.apiData}
+    }
+  }
+
+  useEffect(() => {
+    dispatchEvent(fetchData())
+  }, [props.ojectId, dispatch])
 
   return (
     <div className="App">
@@ -14,10 +27,12 @@ function App() {
       </div>
       <input onChange={(e) => { }} />
       <div>
-        {/* Once you have plugged everything in, render the image here! */}
+        {data.objectId}
+        {renderImg()}
       </div>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state, ownProps) => ({ objectId: state.data.objectId})
+export default connect(mapStateToProps) (App)
