@@ -1,7 +1,7 @@
 import './App.css';
 import { useSelector, useDispatch, connect } from 'react-redux'
-import { useEffect } from 'react';
 import { clearData, fetchData, incrementId, decrementId, inputId } from './features/dataSlice'
+import { useEffect } from 'react';
 
 function App(props) {
   const dispatch = useDispatch()
@@ -9,15 +9,16 @@ function App(props) {
 
   const renderImg = () => {
     if(data.apiData) {
-      return <img style={{'width': '100vw'}} src={data.apiDataPrimaryImage} alt={data.apiData.title}/>
+      return <img style={{'width': '100vw'}} src={data.apiData.primaryImage} alt={data.apiData.title} />
     } else {
       return <p>image here</p>
     }
   }
 
   useEffect(() => {
-    dispatchEvent(fetchData())
-  }, [props.ojectId, dispatch])
+    dispatch(fetchData())
+  }, [props.objectId, dispatch])
+
 
   return (
     <div className="App">
@@ -27,9 +28,9 @@ function App(props) {
         <button onClick={() => dispatch(incrementId())}>Next</button>
         <button onClick={() => dispatch(decrementId())}>Back</button>
       </div>
-      <input value= { data.objectId } onChange={(e) => {
+      <input value={ data.objectId } onChange={(e) => {
         dispatch(inputId(Number(e.target.value)))
-       }} />
+      }} />
       <div>
         {data.objectId}
         {renderImg()}
@@ -38,5 +39,7 @@ function App(props) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => ({ objectId: state.data.objectId})
-export default connect(mapStateToProps) (App)
+
+const mapStateToProps = (state, ownProps) => ({ objectId: state.data.objectId })
+
+export default connect(mapStateToProps)(App);
